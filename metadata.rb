@@ -1,19 +1,21 @@
-name 'chef-alfresco-db'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
-license 'all_rights'
+name 'alfresco-db'
+maintainer 'Alfresco Tooling and Automation Team'
+maintainer_email 'devops@alfresco.com'
+license 'Apache 2.0'
 description 'Installs/Configures chef-alfresco-db'
 long_description 'Installs/Configures chef-alfresco-db'
-version '0.1.0'
+version '0.1'
 
-# The `issues_url` points to the location where issues for this cookbook are
-# tracked.  A `View Issues` link will be displayed on this cookbook's page when
-# uploaded to a Supermarket.
-#
-# issues_url 'https://github.com/<insert_org_here>/chef-alfresco-db/issues' if respond_to?(:issues_url)
+chef_version '~> 12' if respond_to?(:chef_version)
 
-# The `source_url` points to the development reposiory for this cookbook.  A
-# `View Source` link will be displayed on this cookbook's page when uploaded to
-# a Supermarket.
-#
-# source_url 'https://github.com/<insert_org_here>/chef-alfresco-db' if respond_to?(:source_url)
+issues_url 'https://github.com/Alfresco/chef-alfresco-db/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/Alfresco/chef-alfresco-db' if respond_to?(:source_url)
+
+supports 'centos', '>= 7.0'
+
+depends 'mysql', '~> 7.2'
+depends 'mysql2_chef_gem', '>= 1.0.1'
+depends 'selinux_policy', '~> 2.0.1'
+depends 'database', '>= 4.0.6'
+depends 'alfresco-utils'
+depends 'poise-derived', '~> 1.0.0'
