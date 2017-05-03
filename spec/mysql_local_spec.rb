@@ -128,31 +128,31 @@ RSpec.describe 'alfresco-db::mysql_local' do
 
   it 'should create a mysql service' do
     expect(chef_run).to create_mysql_service('default').with(
-    port: "3306",
-    version: '5.6',
-    initial_root_password: 'alfresco',
-    bind_address: nil,
-    data_dir: '/media/mysql-default'
+      port: '3306',
+      version: '5.6',
+      initial_root_password: 'alfresco',
+      bind_address: nil,
+      data_dir: '/media/mysql-default'
     )
   end
 
   it 'should start a mysql service' do
     expect(chef_run).to start_mysql_service('default').with(
-    port: "3306",
-    version: '5.6',
-    initial_root_password: 'alfresco',
-    bind_address: nil,
-    data_dir: '/media/mysql-default'
+      port: '3306',
+      version: '5.6',
+      initial_root_password: 'alfresco',
+      bind_address: nil,
+      data_dir: '/media/mysql-default'
     )
   end
 
   it 'should redeploy_mycfn_template a mysql service' do
     expect(chef_run).to redeploy_mycfn_template_mysql_service('default').with(
-    port: "3306",
-    version: '5.6',
-    initial_root_password: 'alfresco',
-    bind_address: nil,
-    data_dir: '/media/mysql-default'
+      port: '3306',
+      version: '5.6',
+      initial_root_password: 'alfresco',
+      bind_address: nil,
+      data_dir: '/media/mysql-default'
     )
   end
 
@@ -168,9 +168,9 @@ RSpec.describe 'alfresco-db::mysql_local' do
         password: 'alfresco',
       }
     expect(chef_run).to create_mysql_database('alfresco').with(
-    connection: mysql_connection_info,
-    collation: 'utf8_general_ci',
-    encoding: 'utf8',
+      connection: mysql_connection_info,
+      collation: 'utf8_general_ci',
+      encoding: 'utf8'
     )
   end
 
@@ -182,9 +182,9 @@ RSpec.describe 'alfresco-db::mysql_local' do
         password: 'alfresco',
       }
     expect(chef_run).to create_mysql_database_user('alfresco').with(
-    connection: mysql_connection_info,
-    host: '127.0.0.1',
-    password: 'alfresco',
+      connection: mysql_connection_info,
+      host: '127.0.0.1',
+      password: 'alfresco'
     )
   end
 
@@ -196,15 +196,15 @@ RSpec.describe 'alfresco-db::mysql_local' do
         password: 'alfresco',
       }
     expect(chef_run).to grant_mysql_database_user('alfresco').with(
-    connection: mysql_connection_info,
-    host: '127.0.0.1',
-    password: 'alfresco',
+      connection: mysql_connection_info,
+      host: '127.0.0.1',
+      password: 'alfresco'
     )
   end
 
   it 'should modify user mysql' do
     expect(chef_run).to modify_user('mysql').with(
-    shell: '/sbin/nologin',
+      shell: '/sbin/nologin'
     )
   end
 
@@ -214,17 +214,16 @@ RSpec.describe 'alfresco-db::mysql_local' do
 
   it 'link /root/.mysql_history to /dev/null' do
     expect(chef_run).to create_link('/root/.mysql_history').with(
-    to: '/dev/null',
-    link_type: :symbolic,
+      to: '/dev/null',
+      link_type: :symbolic
     )
   end
 
   it 'create directory /usr/lib64/mysql/plugin' do
     expect(chef_run).to create_directory('/usr/lib64/mysql/plugin/').with(
-    mode: 00775,
-    owner: 'mysql',
-    group: 'mysql',
+      mode: 00775,
+      owner: 'mysql',
+      group: 'mysql'
     )
   end
-
 end
