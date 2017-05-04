@@ -1,6 +1,6 @@
 # chef-alfresco-db cookbook
 [![Build Status](https://travis-ci.org/Alfresco/chef-alfresco-db.svg)](https://travis-ci.org/Alfresco/chef-alfresco-db?branch=master)
-[![Cookbook](http://img.shields.io/cookbook/v/alfresco-appserver.svg)](https://github.com/Alfresco/chef-alfresco-db)
+[![Cookbook](http://img.shields.io/cookbook/v/chef-alfresco-db.svg)](https://github.com/Alfresco/chef-alfresco-db)
 [![Coverage Status](https://coveralls.io/repos/github/Alfresco/chef-alfresco-db/badge.svg?branch=develop)](https://coveralls.io/github/Alfresco/chef-alfresco-db?branch=master)
 
 This cookbook will install the Application Server part of the Alfresco stack.
