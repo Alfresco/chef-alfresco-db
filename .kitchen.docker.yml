@@ -1,10 +1,7 @@
 ---
 driver:
-  name: vagrant
-  customize:
-    memory: 1024
-    cpus: 2
-
+  name: docker
+  use_sudo: false
 
 provisioner:
   name: chef_zero
