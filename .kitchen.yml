@@ -26,5 +26,5 @@ suites:
     verifier:
       inspec_tests:
         - name: chef-alfresco-inspec-mysql
-          git: git@github.com:Alfresco/chef-alfresco-inspec-mysql.git
+          git: https://github.com/Alfresco/chef-alfresco-inspec-mysql.git
     attributes:
