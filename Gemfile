@@ -10,6 +10,7 @@ gem 'chefspec', '~> 5.3.0'
 gem 'coveralls', require: false
 gem 'rake'
 gem 'chef', '~> 12.19.36'
+gem 'yamllint'
 
 group :docker do
   gem 'test-kitchen', '~> 1.4'
