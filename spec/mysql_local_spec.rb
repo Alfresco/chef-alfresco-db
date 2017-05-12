@@ -11,8 +11,10 @@ RSpec.describe 'alfresco-db::mysql_local' do
   end
 
   before do
-    stub_command('getenforce | grep -i enforcing').and_return(false)
   end
+
+  let(:shellout_0) { double(exitstatus: 0) }
+  let(:shellout_1) { double(exitstatus: 1) }
 
   it 'should create a tmp directory' do
     expect(chef_run).to create_directory('/tmp').with(
@@ -28,56 +30,53 @@ RSpec.describe 'alfresco-db::mysql_local' do
     )
   end
 
-  it 'should include selinux_policy::install' do
-    expect(chef_run).to include_recipe('selinux_policy::install')
-  end
-
   it 'should create a /var/lib/mysql-default directory' do
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('getenforce | grep -i enforcing').and_return(shellout_0)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('which semanage').and_return(shellout_0)
     expect(chef_run).to create_directory('/var/lib/mysql-default')
   end
 
   it 'should create a /var/log/mysql-default directory' do
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('getenforce | grep -i enforcing').and_return(shellout_0)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('which semanage').and_return(shellout_0)
     expect(chef_run).to create_directory('/var/log/mysql-default')
   end
 
   it 'should run selinux_policy_fcontext on /var/lib/mysql-default' do
-    stub_command('getenforce | grep -i enforcing').and_return(true)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('getenforce | grep -i enforcing').and_return(shellout_0)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('which semanage').and_return(shellout_0)
     expect(chef_run).to addormodify_selinux_policy_fcontext('/var/lib/mysql-default(/.*)?').with(
       secontext: 'mysqld_db_t'
     )
   end
 
   it 'should not run selinux_policy_fcontext on /var/lib/mysql-default if selinux not enforcing' do
-    stub_command('getenforce | grep -i enforcing').and_return(false)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('getenforce | grep -i enforcing').and_return(shellout_1)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('which semanage').and_return(shellout_0)
     expect(chef_run).not_to addormodify_selinux_policy_fcontext('/var/lib/mysql-default(/.*)?').with(
       secontext: 'mysqld_db_t'
     )
   end
 
   it 'should run selinux_policy_fcontext on /var/log/mysql-default' do
-    stub_command('getenforce | grep -i enforcing').and_return(true)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('getenforce | grep -i enforcing').and_return(shellout_0)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('which semanage').and_return(shellout_0)
     expect(chef_run).to addormodify_selinux_policy_fcontext('/var/log/mysql-default(/.*)?').with(
       secontext: 'mysqld_log_t'
     )
   end
 
   it 'should not run selinux_policy_fcontext on /var/log/mysql-default if selinux not enforcing' do
-    stub_command('getenforce | grep -i enforcing').and_return(false)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('getenforce | grep -i enforcing').and_return(shellout_0)
+    allow(Chef::Mixin::ShellOut).to receive(:shell_out).with('which semanage').and_return(shellout_1)
     expect(chef_run).not_to addormodify_selinux_policy_fcontext('/var/log/mysql-default(/.*)?').with(
       secontext: 'mysqld_log_t'
     )
   end
 
-  it 'should create a mysql group' do
-    expect(chef_run).to create_group('mysql').with(
-      group_name: 'mysql'
-    )
-  end
-
   it 'should create a mysql user' do
     expect(chef_run).to create_user('mysql').with(
-      username: 'mysql',
-      gid: 'mysql'
+      username: 'mysql'
     )
   end
 

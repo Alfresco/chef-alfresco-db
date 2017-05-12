@@ -28,30 +28,22 @@ mysql2_chef_gem 'default' do
   action :install
 end
 
-include_recipe 'selinux_policy::install'
-
 { 'mysqld_db_t' => "/var/lib/mysql-#{service_name}",
   'mysqld_log_t' => "/var/log/mysql-#{service_name}" }.each do |sc, f|
   directory f do
     recursive true
     action :create
+    only_if { enforcing? }
+    only_if { semanage_installed? }
   end
   selinux_policy_fcontext "#{f}(/.*)?" do
     secontext sc
-    only_if 'getenforce | grep -i enforcing'
+    only_if { enforcing? }
+    only_if { semanage_installed? }
   end
 end
 
-group 'mysql' do
-  group_name 'mysql'
-  action :create
-end
-
-user 'mysql' do
-  username 'mysql'
-  gid 'mysql'
-  action :create
-end
+user 'mysql'
 
 log_bin = node['mysql_local']['my_cnf']['mysqld']['log-bin']
 if log_bin && !log_bin.to_s.empty?
@@ -71,7 +63,7 @@ directory 'log_bin_folder' do
   mode 00700
   recursive true
   action :create
-  only_if { !log_bin_folder.to_s.empty? }
+  not_if { log_bin_folder.to_s.empty? }
 end
 
 mysql_service service_name do
